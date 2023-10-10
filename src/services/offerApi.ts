@@ -1,6 +1,6 @@
-const BASE_URL = 'http://localhost:8000'
+const BASE_URL = import.meta.env.VITE_API_SERVER_URL
 
-export async function getOffer(token: string, serverId: number, offer: Offer): Promise<Offer> {
+export async function sendOffer(token: string, serverId: number, offer: Offer): Promise<Offer> {
   const response = await fetch(`${BASE_URL}/servers/${serverId}/offer`, {
     method: 'POST',
     body: JSON.stringify(offer),

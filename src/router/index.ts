@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
-import LoginView from '@/views/LoginView.vue'
+import ProfileView from '@/views/ProfileView.vue'
 import ServersView from '@/views/ServersView.vue'
-import ServerView from '@/views/ServerView.vue'
 import { authGuard } from '@auth0/auth0-vue'
 import AppsView from '@/views/AppsView.vue'
 import ServerSettingsView from '@/views/ServerSettingsView.vue'
 import ServerCreateView from '@/views/ServerCreateView.vue'
+import ServerConnectView from '@/views/ServerConnectView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,43 +17,40 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/login',
-      name: 'login',
-      component: LoginView
+      path: '/profile',
+      name: 'profile',
+      component: ProfileView
     },
     {
       path: '/servers',
       name: 'servers',
-      component: ServersView,
-      beforeEnter: authGuard
+      component: ServersView
     },
     {
       path: '/apps',
       name: 'apps',
-      component: AppsView,
-      beforeEnter: authGuard
+      component: AppsView
     },
     {
-      path: '/servers/:id',
-      name: 'server',
-      component: ServerView,
-      props: true,
-      beforeEnter: authGuard
+      path: '/servers/:id/connect',
+      name: 'server_connect',
+      component: ServerConnectView,
+      props: true
     },
     {
       path: '/servers/:id/settings',
       name: 'server_settings',
       component: ServerSettingsView,
-      props: true,
-      beforeEnter: authGuard
+      props: true
     },
     {
       path: '/servers/create',
       name: 'server_create',
-      component: ServerCreateView,
-      beforeEnter: authGuard
+      component: ServerCreateView
     }
   ]
 })
+
+router.beforeEach((to) => authGuard(to))
 
 export default router

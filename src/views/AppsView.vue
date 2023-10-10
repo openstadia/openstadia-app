@@ -1,10 +1,9 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useAuth0 } from '@auth0/auth0-vue'
 import { onMounted } from 'vue'
 import AppItem from '@/components/AppItem.vue'
 import { useAppsStore } from '@/stores/apps'
 import { useRouter } from 'vue-router'
-import ServerItem from '@/components/ServerItem.vue'
 
 const apps = useAppsStore()
 const { getAccessTokenSilently } = useAuth0()
@@ -21,7 +20,7 @@ onMounted(() => {
 
 const selectApp = (app: App) => {
   router.push({
-    name: 'server',
+    name: 'server_connect',
     params: { id: app.server_id },
     query: { app_id: app.id }
   })
@@ -29,9 +28,11 @@ const selectApp = (app: App) => {
 </script>
 
 <template>
-  <div>
-    <h2>Apps</h2>
+  <h2 class="text-2xl font-bold">Apps</h2>
 
-    <AppItem v-for="app in apps.apps" @connect="selectApp" :key="app.id" :app="app"></AppItem>
-  </div>
+  <ul class="mt-6">
+    <li v-for="app in apps.apps" :key="app.id" class="pb-2 sm:pb-3">
+      <AppItem :app="app" @connect="selectApp"></AppItem>
+    </li>
+  </ul>
 </template>

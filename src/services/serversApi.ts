@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8000'
+const BASE_URL = import.meta.env.VITE_API_SERVER_URL
 
 // TODO Add timeout
 export async function getServers(token: string) {
@@ -35,6 +35,16 @@ export async function createServer(token: string, server: ServerCreate) {
     headers: {
       Authorization: 'Bearer ' + token,
       'Content-Type': 'application/json'
+    }
+  })
+  return await response.json()
+}
+
+export async function deleteServer(token: string, serverId: number) {
+  const response = await fetch(`${BASE_URL}/servers/${serverId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: 'Bearer ' + token
     }
   })
   return await response.json()

@@ -1,18 +1,30 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+<script lang="ts" setup>
+import { RouterView } from 'vue-router'
+import TheHeader from '@/components/TheHeader.vue'
+import TheFooter from '@/components/TheFooter.vue'
+import TheSider from '@/components/TheSider.vue'
+import { onMounted } from 'vue'
+import { initModals } from 'flowbite'
+
+onMounted(() => {
+  initModals()
+})
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <nav class="flex">
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/login">Login</RouterLink>
-        <RouterLink to="/apps">Apps</RouterLink>
-        <RouterLink to="/servers">Servers</RouterLink>
-      </nav>
-    </div>
-  </header>
+  <div class="h-screen bg-white flex flex-col">
+    <TheHeader></TheHeader>
 
-  <RouterView />
+    <TheSider></TheSider>
+
+    <div class="p-4 sm:ml-64">
+      <div class="p-4 mt-14">
+        <div class="max-w-4xl">
+          <RouterView />
+        </div>
+
+        <TheFooter></TheFooter>
+      </div>
+    </div>
+  </div>
 </template>
