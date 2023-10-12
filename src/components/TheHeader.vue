@@ -34,7 +34,7 @@ const { logout, user } = useAuth0()
               ></path>
             </svg>
           </button>
-          <RouterLink class="flex ml-2 md:mr-24" href="https://flowbite.com" to="/">
+          <RouterLink class="flex ml-2 md:mr-24" to="/">
             <img alt="OpenStadia Logo" class="h-8 mr-3" src="@/assets/openstadia.svg" />
             <span
               class="font-title self-center text-xl sm:text-2xl whitespace-nowrap dark:text-white"
