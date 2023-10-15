@@ -8,3 +8,17 @@ export async function getServersApps(token: string, serverId: number): Promise<A
   })
   return await response.json()
 }
+
+export async function getServersAppsSync(token: string, serverId: number): Promise<App[]> {
+  const response = await fetch(`${BASE_URL}/servers/${serverId}/apps/sync`, {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+
+  if (!response.ok) {
+    return []
+  }
+
+  return await response.json()
+}

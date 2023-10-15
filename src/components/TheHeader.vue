@@ -3,6 +3,14 @@ import { RouterLink } from 'vue-router'
 import { useAuth0 } from '@auth0/auth0-vue'
 
 const { logout, user } = useAuth0()
+
+const onLogout = () => {
+  logout({
+    logoutParams: {
+      returnTo: location.origin
+    }
+  })
+}
 </script>
 
 <template>
@@ -82,7 +90,7 @@ const { logout, user } = useAuth0()
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                     href="#"
                     role="menuitem"
-                    @click="logout()"
+                    @click="onLogout"
                     >Sign out</a
                   >
                 </li>

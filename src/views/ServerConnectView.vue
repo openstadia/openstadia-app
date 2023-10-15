@@ -4,7 +4,7 @@ import { useAuth0 } from '@auth0/auth0-vue'
 import { getServer, isServerOnline } from '@/services/serversApi'
 import { sendOffer } from '@/services/offerApi'
 import { useRoute } from 'vue-router'
-import { getServersApps } from '@/services/serversAppsApi'
+import { getServersAppsSync } from '@/services/serversAppsApi'
 import IconFullscreen from '@/components/icons/IconFullscreen.vue'
 import { initChannel, initRtc } from '@/utils/rtc'
 import { initGamepad, initKeyboard, initMouse } from '@/utils/inputs'
@@ -35,7 +35,7 @@ onMounted(async () => {
   server.value = await getServer(token, props.id)
   isOnline.value = await isServerOnline(token, props.id)
 
-  apps.value = await getServersApps(token, props.id)
+  apps.value = await getServersAppsSync(token, props.id)
 })
 
 const startVideo = async () => {
@@ -54,8 +54,7 @@ const startVideo = async () => {
   const formElements = document.forms['connect'].elements
   const codecType = formElements.type.value
   const bitrate = formElements.bitrate.valueAsNumber * 1_000_000
-  // const app = formElements.app.value
-  const app = 'screen'
+  const app = formElements.app.value
 
   const localDescription = await getLocalDescription()
 
@@ -142,7 +141,7 @@ const enterFullScreen = () => {
         name="app"
       >
         <option disabled selected value="">None</option>
-        <option v-for="app in apps" :key="app.id" :selected="app.id == selectedAppId" :value="app">
+        <option v-for="app in apps" :key="app.id" :selected="app.id == selectedAppId" :value="app.name">
           {{ app.name }}
         </option>
       </select>
