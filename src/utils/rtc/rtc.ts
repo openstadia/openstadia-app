@@ -34,6 +34,22 @@ export function initRtc(videoEl: HTMLVideoElement | null, audioEl: HTMLAudioElem
   const getLocalDescription = async () => {
     const offer = await pc.createOffer()
     await pc.setLocalDescription(offer)
+
+    await new Promise<void>((resolve) => {
+      if (pc.iceGatheringState === 'complete') {
+        resolve()
+      } else {
+        const checkState = () => {
+          if (pc.iceGatheringState === 'complete') {
+            pc.removeEventListener('icegatheringstatechange', checkState)
+            resolve()
+          }
+        }
+
+        pc.addEventListener('icegatheringstatechange', checkState)
+      }
+    })
+
     return pc.localDescription
   }
 
