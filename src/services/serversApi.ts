@@ -1,6 +1,5 @@
 const BASE_URL = import.meta.env.VITE_API_SERVER_URL
 
-// TODO Add timeout
 export async function getServers(token: string) {
   const response = await fetch(`${BASE_URL}/servers/`, {
     headers: {

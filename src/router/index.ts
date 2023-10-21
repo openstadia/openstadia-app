@@ -8,10 +8,10 @@ import ServerSettingsView from '@/views/ServerSettingsView.vue'
 import ServerCreateView from '@/views/ServerCreateView.vue'
 import ServerConnectView from '@/views/ServerConnectView.vue'
 import { unref } from 'vue'
-import { getMe } from '@/services/usersApi'
 import OnboardingView from '@/views/OnboardingView.vue'
 import VerifyEmailView from '@/views/VerifyEmailView.vue'
 import { auth0 } from '@/auth0'
+import { useUserStore } from '@/stores/user'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,7 +59,7 @@ const router = createRouter({
       component: OnboardingView
     },
     {
-      path: '/verify_email',
+      path: '/verify-email',
       name: 'verify_email',
       component: VerifyEmailView
     }
@@ -72,22 +72,27 @@ router.beforeEach(async (to) => {
     return isAuthGuard
   }
 
-  if (to.name === 'verify_email') {
-    return true
-  }
-
   const emailVerified = unref(auth0.idTokenClaims)?.email_verified
-  if (!emailVerified) {
+  if (to.name === 'verify_email') {
+    if (emailVerified) {
+      return { name: 'home' }
+    } else {
+      return true
+    }
+  } else if (!emailVerified) {
     return { name: 'verify_email' }
   }
 
+  const userStore = useUserStore()
+  await userStore.fetchUser()
+  const user = userStore.user
   if (to.name === 'onboarding') {
-    return true
-  }
-
-  const token = await auth0.getAccessTokenSilently()
-  const me = await getMe(token)
-  if (!me) {
+    if (user) {
+      return { name: 'home' }
+    } else {
+      return true
+    }
+  } else if (!user) {
     return { name: 'onboarding' }
   }
 

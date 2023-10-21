@@ -1,25 +1,18 @@
 <script lang="ts" setup>
 import { useServersStore } from '@/stores/servers'
-import { useAuth0 } from '@auth0/auth0-vue'
 import { onMounted } from 'vue'
 import ServerItem from '@/components/ServerItem.vue'
 import { useRouter } from 'vue-router'
 
-const servers = useServersStore()
-const { getAccessTokenSilently } = useAuth0()
+const serversStore = useServersStore()
 const router = useRouter()
 
 const onCreate = async () => {
   await router.push({ name: 'server_create' })
 }
 
-const fetchServers = async () => {
-  const token = await getAccessTokenSilently()
-  await servers.getAll(token)
-}
-
 onMounted(() => {
-  fetchServers()
+  serversStore.fetchAll()
 })
 </script>
 
@@ -37,7 +30,7 @@ onMounted(() => {
   </div>
 
   <ul class="mt-4">
-    <li v-for="server in servers.servers" :key="server.id" class="pb-2 sm:pb-3">
+    <li v-for="server in serversStore.servers" :key="server.id" class="pb-2 sm:pb-3">
       <ServerItem :server="server" />
     </li>
   </ul>

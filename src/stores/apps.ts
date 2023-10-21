@@ -1,22 +1,15 @@
 import { defineStore } from 'pinia'
 import { getApps } from '@/services/appsApi'
+import { computed, ref } from 'vue'
 
-interface State {
-  apps: App[]
-}
+export const useAppsStore = defineStore('apps', () => {
+  const apps = ref<App[]>([])
 
-export const useAppsStore = defineStore('apps', {
-  state: (): State => ({
-    apps: []
-  }),
-  getters: {
-    groupByApp(state) {
-      return groupBy(state.apps, ({ name }) => name)
-    }
-  },
-  actions: {
-    async getAll(token: string) {
-      this.apps = await getApps(token)
-    }
+  const fetchAll = async (token: string) => {
+    apps.value = await getApps(token)
   }
+
+  const groupByApp = computed(() => groupBy(apps.value, (app) => app.name!!))
+
+  return { apps, fetchAll, groupByApp }
 })

@@ -1,22 +1,19 @@
 import { defineStore } from 'pinia'
 import { getServers } from '@/services/serversApi'
+import { computed, ref } from 'vue'
+import { auth0 } from '@/auth0'
 
-interface State {
-  servers: Server[]
-}
+export const useServersStore = defineStore('servers', () => {
+  const servers = ref<Server[]>([])
 
-export const useServersStore = defineStore('servers', {
-  state: (): State => ({
-    servers: []
-  }),
-  getters: {
-    onlineServers(state) {
-      return state.servers.filter((server) => server.isOnline)
-    }
-  },
-  actions: {
-    async getAll(token: string) {
-      this.servers = await getServers(token)
-    }
+  const fetchAll = async () => {
+    const token = await auth0.getAccessTokenSilently()
+    servers.value = await getServers(token)
   }
+
+  const onlineServers = computed(() => {
+    return servers.value.filter((server) => server.isOnline)
+  })
+
+  return { servers, fetchAll, onlineServers }
 })

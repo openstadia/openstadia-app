@@ -141,7 +141,12 @@ const enterFullScreen = () => {
         name="app"
       >
         <option disabled selected value="">None</option>
-        <option v-for="app in apps" :key="app.id" :selected="app.id == selectedAppId" :value="app.name">
+        <option
+          v-for="app in apps"
+          :key="app.id"
+          :selected="app.id == selectedAppId"
+          :value="app.name"
+        >
           {{ app.name }}
         </option>
       </select>

@@ -1,11 +1,19 @@
 <script lang="ts" setup>
 import { useAuth0 } from '@auth0/auth0-vue'
-import { useRouter } from 'vue-router'
+import { onBeforeRouteUpdate, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { createUser } from '@/services/usersApi'
+import { useUserStore } from '@/stores/user'
 
 const router = useRouter()
 const { getAccessTokenSilently, user } = useAuth0()
+const userStore = useUserStore()
+
+onBeforeRouteUpdate(() => {
+  if (userStore.user) {
+    return { name: 'home' }
+  }
+})
 
 const username = ref(user.value?.nickname)
 
