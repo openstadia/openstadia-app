@@ -1,7 +1,8 @@
-const BASE_URL = import.meta.env.VITE_API_SERVER_URL
+import { getBaseUrl } from '@/services/baseUrl'
 
 export async function getApps(token: string): Promise<App[]> {
-  const response = await fetch(`${BASE_URL}/apps`, {
+  const baseUrl = getBaseUrl()
+  const response = await fetch(`${baseUrl}/apps`, {
     headers: {
       Authorization: 'Bearer ' + token
     }

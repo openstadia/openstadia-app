@@ -1,9 +1,9 @@
 import type { CreateUser, User } from '@/models/user'
-
-const BASE_URL = import.meta.env.VITE_API_SERVER_URL
+import { getBaseUrl } from '@/services/baseUrl'
 
 export async function getMe(token: string): Promise<User | null> {
-  const response = await fetch(`${BASE_URL}/users/me`, {
+  const baseUrl = getBaseUrl()
+  const response = await fetch(`${baseUrl}/users/me`, {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -17,7 +17,8 @@ export async function getMe(token: string): Promise<User | null> {
 }
 
 export async function createUser(token: string, user: CreateUser): Promise<User | null> {
-  const response = await fetch(`${BASE_URL}/users`, {
+  const baseUrl = getBaseUrl()
+  const response = await fetch(`${baseUrl}/users`, {
     method: 'POST',
     body: JSON.stringify(user),
     headers: {

@@ -1,9 +1,9 @@
 import type { ServerToken } from '@/models/server'
-
-const BASE_URL = import.meta.env.VITE_API_SERVER_URL
+import { getBaseUrl } from '@/services/baseUrl'
 
 export async function getServers(token: string) {
-  const response = await fetch(`${BASE_URL}/servers/`, {
+  const baseUrl = getBaseUrl()
+  const response = await fetch(`${baseUrl}/servers/`, {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -12,7 +12,8 @@ export async function getServers(token: string) {
 }
 
 export async function getServer(token: string, serverId: number) {
-  const response = await fetch(`${BASE_URL}/servers/${serverId}`, {
+  const baseUrl = getBaseUrl()
+  const response = await fetch(`${baseUrl}/servers/${serverId}`, {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -21,7 +22,8 @@ export async function getServer(token: string, serverId: number) {
 }
 
 export async function isServerOnline(token: string, serverId: number) {
-  const response = await fetch(`${BASE_URL}/servers/${serverId}/online`, {
+  const baseUrl = getBaseUrl()
+  const response = await fetch(`${baseUrl}/servers/${serverId}/online`, {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -30,7 +32,8 @@ export async function isServerOnline(token: string, serverId: number) {
 }
 
 export async function createServer(token: string, server: ServerCreate) {
-  const response = await fetch(`${BASE_URL}/servers`, {
+  const baseUrl = getBaseUrl()
+  const response = await fetch(`${baseUrl}/servers`, {
     method: 'POST',
     body: JSON.stringify(server),
     headers: {
@@ -42,7 +45,8 @@ export async function createServer(token: string, server: ServerCreate) {
 }
 
 export async function deleteServer(token: string, serverId: number) {
-  const response = await fetch(`${BASE_URL}/servers/${serverId}`, {
+  const baseUrl = getBaseUrl()
+  const response = await fetch(`${baseUrl}/servers/${serverId}`, {
     method: 'DELETE',
     headers: {
       Authorization: 'Bearer ' + token
@@ -52,7 +56,8 @@ export async function deleteServer(token: string, serverId: number) {
 }
 
 export async function regenerateServerToken(token: string, serverId: number): Promise<ServerToken> {
-  const response = await fetch(`${BASE_URL}/servers/${serverId}/token`, {
+  const baseUrl = getBaseUrl()
+  const response = await fetch(`${baseUrl}/servers/${serverId}/token`, {
     method: 'POST',
     headers: {
       Authorization: 'Bearer ' + token

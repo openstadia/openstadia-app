@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { getServers } from '@/services/serversApi'
 import { computed, ref } from 'vue'
 import { auth0 } from '@/auth0'
+import type {Server} from "@/models/server";
 
 export const useServersStore = defineStore('servers', () => {
   const servers = ref<Server[]>([])

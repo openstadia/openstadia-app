@@ -1,7 +1,8 @@
-const BASE_URL = import.meta.env.VITE_API_SERVER_URL
+import {getBaseUrl} from "@/services/baseUrl";
 
 export async function getServersApps(token: string, serverId: number): Promise<App[]> {
-  const response = await fetch(`${BASE_URL}/servers/${serverId}/apps`, {
+  const baseUrl = getBaseUrl()
+  const response = await fetch(`${baseUrl}/servers/${serverId}/apps`, {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -10,7 +11,8 @@ export async function getServersApps(token: string, serverId: number): Promise<A
 }
 
 export async function getServersAppsSync(token: string, serverId: number): Promise<App[]> {
-  const response = await fetch(`${BASE_URL}/servers/${serverId}/apps/sync`, {
+  const baseUrl = getBaseUrl()
+  const response = await fetch(`${baseUrl}/servers/${serverId}/apps/sync`, {
     headers: {
       Authorization: 'Bearer ' + token
     }

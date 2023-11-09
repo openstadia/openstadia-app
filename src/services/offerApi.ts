@@ -1,7 +1,8 @@
-const BASE_URL = import.meta.env.VITE_API_SERVER_URL
+import {getBaseUrl} from "@/services/baseUrl";
 
 export async function sendOffer(token: string, serverId: number, offer: Offer): Promise<Offer> {
-  const response = await fetch(`${BASE_URL}/servers/${serverId}/offer`, {
+  const baseUrl = getBaseUrl()
+  const response = await fetch(`${baseUrl}/servers/${serverId}/offer`, {
     method: 'POST',
     body: JSON.stringify(offer),
     headers: {
