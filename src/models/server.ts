@@ -1,4 +1,4 @@
-interface Server {
+export interface Server {
   id: number
   name: string
   token: string
@@ -6,6 +6,10 @@ interface Server {
   isOnline: boolean
 }
 
-interface ServerCreate {
+export interface ServerCreate {
   name: string
+}
+
+export interface ServerToken {
+  token: string
 }

@@ -2,8 +2,10 @@
 import { useAuth0 } from '@auth0/auth0-vue'
 import { useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
-import { deleteServer, getServer } from '@/services/serversApi'
+import { deleteServer, getServer, regenerateServerToken } from '@/services/serversApi'
 import IconRefresh from '@/components/icons/IconRefresh.vue'
+import type { Server } from '@/models/server'
+import IconCopy from '@/components/icons/IconCopy.vue'
 
 const props = defineProps<{
   id: number
@@ -26,7 +28,17 @@ const onDelete = async () => {
   await router.push({ name: 'servers' })
 }
 
-const regenerateToken = async () => {}
+const copyToken = async () => {
+  const tokenValue = server.value?.token
+  if (tokenValue) {
+    await navigator.clipboard.writeText(tokenValue)
+  }
+}
+const regenerateToken = async () => {
+  const token = await getAccessTokenSilently()
+  const serverToken = await regenerateServerToken(token, props.id)
+  server.value!!.token = serverToken.token
+}
 
 const rename = async () => {}
 </script>
@@ -105,10 +117,17 @@ const rename = async () => {}
         <button
           class="ml-2 text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center"
           type="button"
+          @click="copyToken"
+        >
+          <IconCopy class="w-5 h-5"></IconCopy>
+        </button>
+
+        <button
+          class="ml-2 text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center"
+          type="button"
           @click="regenerateToken"
         >
           <IconRefresh class="w-5 h-5"></IconRefresh>
-          <span class="sr-only">Enter fullscreen</span>
         </button>
       </div>
     </div>

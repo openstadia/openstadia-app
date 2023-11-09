@@ -1,3 +1,5 @@
+import type { ServerToken } from '@/models/server'
+
 const BASE_URL = import.meta.env.VITE_API_SERVER_URL
 
 export async function getServers(token: string) {
@@ -42,6 +44,16 @@ export async function createServer(token: string, server: ServerCreate) {
 export async function deleteServer(token: string, serverId: number) {
   const response = await fetch(`${BASE_URL}/servers/${serverId}`, {
     method: 'DELETE',
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  return await response.json()
+}
+
+export async function regenerateServerToken(token: string, serverId: number): Promise<ServerToken> {
+  const response = await fetch(`${BASE_URL}/servers/${serverId}/token`, {
+    method: 'POST',
     headers: {
       Authorization: 'Bearer ' + token
     }

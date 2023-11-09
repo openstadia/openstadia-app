@@ -4,6 +4,7 @@ import IconHome from '@/components/icons/IconHome.vue'
 import IconProfile from '@/components/icons/IconProfile.vue'
 import IconApp from '@/components/icons/IconApp.vue'
 import IconServer from '@/components/icons/IconServer.vue'
+import IconCode from '@/components/icons/IconCode.vue'
 
 interface MenuItem {
   name: string
@@ -31,6 +32,11 @@ const items: MenuItem[] = [
     name: 'Servers',
     link: '/servers',
     icon: IconServer
+  },
+  {
+    name: 'Developer',
+    link: '/developer',
+    icon: IconCode
   }
 ]
 </script>
