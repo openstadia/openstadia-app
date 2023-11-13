@@ -1,5 +1,5 @@
 import type { CreateUser, User } from '@/models/user'
-import { getBaseUrl } from '@/services/baseUrl'
+import { getBaseUrl } from '@/apis/baseUrl'
 
 export async function getMe(token: string): Promise<User | null> {
   const baseUrl = getBaseUrl()

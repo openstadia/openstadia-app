@@ -2,7 +2,7 @@
 import { useAuth0 } from '@auth0/auth0-vue'
 import { onBeforeRouteUpdate, useRouter } from 'vue-router'
 import { ref } from 'vue'
-import { createUser } from '@/services/usersApi'
+import { createUser } from '@/apis/users'
 import { useUserStore } from '@/stores/user'
 
 const router = useRouter()

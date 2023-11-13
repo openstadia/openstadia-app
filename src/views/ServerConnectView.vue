@@ -1,13 +1,16 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { useAuth0 } from '@auth0/auth0-vue'
-import { getServer, isServerOnline } from '@/services/serversApi'
-import { sendOffer } from '@/services/offerApi'
+import { getServer } from '@/apis/servers'
+import { sendOffer } from '@/apis/offer'
 import { useRoute } from 'vue-router'
-import { getServersAppsSync } from '@/services/serversAppsApi'
+import { getServersAppsSync } from '@/apis/serversApps'
 import IconFullscreen from '@/components/icons/IconFullscreen.vue'
 import { initChannel, initRtc } from '@/utils/rtc'
 import { initGamepad, initKeyboard, initMouse } from '@/utils/inputs'
+import type { Server } from '@/models/server'
+import type { App } from '@/models/app'
+import type { Offer } from '@/models/offer'
 
 const props = defineProps<{
   id: number
@@ -16,7 +19,7 @@ const props = defineProps<{
 const { getAccessTokenSilently } = useAuth0()
 const route = useRoute()
 
-const selectedAppId = route.query.app_id as string
+const selectedAppId = parseInt(route.query.app_id as string)
 
 const videoRef = ref<HTMLVideoElement | null>(null)
 const videoWrapperRef = ref<HTMLDivElement | null>(null)
@@ -33,7 +36,7 @@ onMounted(async () => {
   const token = await getAccessTokenSilently()
 
   server.value = await getServer(token, props.id)
-  isOnline.value = await isServerOnline(token, props.id)
+  isOnline.value = server.value.online
 
   apps.value = await getServersAppsSync(token, props.id)
 })
@@ -54,14 +57,14 @@ const startVideo = async () => {
   const formElements = document.forms['connect'].elements
   const codecType = formElements.type.value
   const bitrate = formElements.bitrate.valueAsNumber * 1_000_000
-  const app = formElements.app.value
+  const appId = parseInt(formElements.app.value)
 
   const localDescription = await getLocalDescription()
 
-  const offer = {
+  const offer: Offer = {
     sdp: localDescription!!.sdp,
     type: localDescription!!.type,
-    app: { name: app },
+    app_id: appId,
     codec: { type: codecType, bitrate: bitrate }
   }
 
@@ -145,7 +148,7 @@ const enterFullScreen = () => {
           v-for="app in apps"
           :key="app.id"
           :selected="app.id == selectedAppId"
-          :value="app.name"
+          :value="app.id"
         >
           {{ app.name }}
         </option>

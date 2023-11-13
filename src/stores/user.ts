@@ -2,7 +2,7 @@ import { ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 import type { User } from '@/models/user'
 import { auth0 } from '@/auth0'
-import { getMe } from '@/services/usersApi'
+import { getMe } from '@/apis/users'
 
 export const useUserStore = defineStore('user', () => {
   const userState = ref<User | null>(null)

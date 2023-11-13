@@ -1,4 +1,4 @@
-interface App {
+export interface App {
   id?: number
   name?: string
   command?: string

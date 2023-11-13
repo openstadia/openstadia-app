@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useAuth0 } from '@auth0/auth0-vue'
 import { useRouter } from 'vue-router'
-import { createServer } from '@/services/serversApi'
+import { createServer } from '@/apis/servers'
 import { ref } from 'vue'
 
 const { getAccessTokenSilently } = useAuth0()

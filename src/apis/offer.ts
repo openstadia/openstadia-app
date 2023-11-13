@@ -1,4 +1,5 @@
-import {getBaseUrl} from "@/services/baseUrl";
+import { getBaseUrl } from '@/apis/baseUrl'
+import type { Offer } from '@/models/offer'
 
 export async function sendOffer(token: string, serverId: number, offer: Offer): Promise<Offer> {
   const baseUrl = getBaseUrl()

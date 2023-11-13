@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
-import { getApps } from '@/services/appsApi'
+import { getApps } from '@/apis/apps'
 import { computed, ref } from 'vue'
+import type { App } from '@/models/app'
 
 export const useAppsStore = defineStore('apps', () => {
   const apps = ref<App[]>([])

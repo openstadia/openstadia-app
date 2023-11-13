@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import {ref} from "vue";
+import { ref } from 'vue'
 
 const HUB_LOCAL_STORAGE_KEY = 'hub'
 const BASE_URL = import.meta.env.VITE_API_SERVER_URL

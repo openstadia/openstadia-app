@@ -2,16 +2,16 @@
 import { useAuth0 } from '@auth0/auth0-vue'
 import { useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
-import { deleteServer, getServer, regenerateServerToken } from '@/services/serversApi'
+import { deleteServer, getServerSettings, regenerateServerToken } from '@/apis/servers'
 import IconRefresh from '@/components/icons/IconRefresh.vue'
-import type { Server } from '@/models/server'
+import type { ServerSettings } from '@/models/server'
 import IconCopy from '@/components/icons/IconCopy.vue'
 
 const props = defineProps<{
   id: number
 }>()
 
-const server = ref<Server | null>(null)
+const server = ref<ServerSettings | null>(null)
 
 const { getAccessTokenSilently } = useAuth0()
 const router = useRouter()
@@ -19,7 +19,7 @@ const router = useRouter()
 onMounted(async () => {
   const token = await getAccessTokenSilently()
 
-  server.value = await getServer(token, props.id)
+  server.value = await getServerSettings(token, props.id)
 })
 
 const onDelete = async () => {

@@ -1,5 +1,5 @@
-import type { ServerToken } from '@/models/server'
-import { getBaseUrl } from '@/services/baseUrl'
+import type { Server, ServerCreate, ServerSettings, ServerToken } from '@/models/server'
+import { getBaseUrl } from '@/apis/baseUrl'
 
 export async function getServers(token: string) {
   const baseUrl = getBaseUrl()
@@ -11,9 +11,19 @@ export async function getServers(token: string) {
   return await response.json()
 }
 
-export async function getServer(token: string, serverId: number) {
+export async function getServer(token: string, serverId: number): Promise<Server> {
   const baseUrl = getBaseUrl()
   const response = await fetch(`${baseUrl}/servers/${serverId}`, {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  return await response.json()
+}
+
+export async function getServerSettings(token: string, serverId: number): Promise<ServerSettings> {
+  const baseUrl = getBaseUrl()
+  const response = await fetch(`${baseUrl}/servers/${serverId}/settings`, {
     headers: {
       Authorization: 'Bearer ' + token
     }

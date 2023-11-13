@@ -1,9 +1,15 @@
+export type UserServerRole = 'owner' | 'user'
+
 export interface Server {
   id: number
   name: string
-  token: string
   owner_id: number
-  isOnline: boolean
+  online: boolean
+  role: UserServerRole
+}
+
+export interface ServerSettings extends Server {
+  token: string
 }
 
 export interface ServerCreate {

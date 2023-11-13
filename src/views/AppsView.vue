@@ -4,6 +4,7 @@ import { onMounted } from 'vue'
 import AppItem from '@/components/AppItem.vue'
 import { useAppsStore } from '@/stores/apps'
 import { useRouter } from 'vue-router'
+import type { App } from '@/models/app'
 
 const apps = useAppsStore()
 const { getAccessTokenSilently } = useAuth0()
@@ -11,7 +12,7 @@ const router = useRouter()
 
 const fetchApps = async () => {
   const token = await getAccessTokenSilently()
-  await apps.getAll(token)
+  await apps.fetchAll(token)
 }
 
 onMounted(() => {

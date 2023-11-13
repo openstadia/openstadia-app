@@ -1,4 +1,5 @@
-import {getBaseUrl} from "@/services/baseUrl";
+import { getBaseUrl } from '@/apis/baseUrl'
+import type { App } from '@/models/app'
 
 export async function getServersApps(token: string, serverId: number): Promise<App[]> {
   const baseUrl = getBaseUrl()
