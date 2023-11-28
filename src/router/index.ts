@@ -13,6 +13,7 @@ import VerifyEmailView from '@/views/VerifyEmailView.vue'
 import { auth0 } from '@/auth0'
 import { useUserStore } from '@/stores/user'
 import DeveloperView from '@/views/DeveloperView.vue'
+import StorageView from "@/views/StorageView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,6 +69,11 @@ const router = createRouter({
       path: '/developer',
       name: 'developer',
       component: DeveloperView
+    },
+    {
+      path: '/storage',
+      name: 'storage',
+      component: StorageView
     }
   ]
 })

@@ -19,3 +19,7 @@ export interface ServerCreate {
 export interface ServerToken {
   token: string
 }
+
+export interface ServerName {
+  name: string
+}

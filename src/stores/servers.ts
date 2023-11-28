@@ -13,7 +13,7 @@ export const useServersStore = defineStore('servers', () => {
   }
 
   const onlineServers = computed(() => {
-    return servers.value.filter((server) => server.isOnline)
+    return servers.value.filter((server) => server.online)
   })
 
   return { servers, fetchAll, onlineServers }
