@@ -19,7 +19,7 @@ onMounted(() => {
 
     <div class="p-4 sm:ml-64">
       <div class="p-4 mt-14">
-        <div class="max-w-4xl">
+        <div class="mr-20">
           <RouterView />
         </div>
 
