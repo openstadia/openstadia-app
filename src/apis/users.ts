@@ -33,3 +33,19 @@ export async function createUser(token: string, user: CreateUser): Promise<User 
 
   return await response.json()
 }
+
+export async function getUserById(token: string, userId: number): Promise<User | null> {
+  const baseUrl = getBaseUrl()
+  const response = await fetch(`${baseUrl}/users/${userId}`, {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+
+  if (!response.ok) {
+    return null
+  }
+
+  return await response.json()
+}
+

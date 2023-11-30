@@ -23,11 +23,11 @@ const items: MenuItem[] = [
     link: '/profile',
     icon: IconProfile
   },
-  {
-    name: 'Apps',
-    link: '/apps',
-    icon: IconApp
-  },
+  // {
+  //   name: 'Apps',
+  //   link: '/apps',
+  //   icon: IconApp
+  // },
   {
     name: 'Servers',
     link: '/servers',

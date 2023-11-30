@@ -1,15 +1,16 @@
 <script lang="ts" setup>
 import IconCopy from '@/components/icons/IconCopy.vue'
 import { useAuth0 } from '@auth0/auth0-vue'
-import { onMounted, ref, watchEffect } from 'vue'
-import { useHubStore } from '@/stores/hub'
-import IconRefresh from '@/components/icons/IconRefresh.vue'
+import { onMounted, ref } from 'vue'
+import { useEnvStore } from '@/stores/env'
+import OsButton from '@/components/shared/OsButton.vue'
+import OsInput from '@/components/shared/OsInput.vue'
 
 const { getAccessTokenSilently } = useAuth0()
-const hubStore = useHubStore()
+const envStore = useEnvStore()
 
-const hubUrl = ref('')
 const token = ref('')
+const env = ref(envStore.env)
 
 onMounted(async () => {
   token.value = await getAccessTokenSilently()
@@ -19,16 +20,13 @@ const copyToken = async () => {
   await navigator.clipboard.writeText(token.value)
 }
 
-watchEffect(() => {
-  hubUrl.value = hubStore.hub
-})
-
 const onUpdate = () => {
-  hubStore.setHub(hubUrl.value)
+  envStore.setEnv(env.value)
 }
 
 const onReset = () => {
-  hubStore.reset()
+  envStore.resetEnv()
+  env.value = envStore.env
 }
 </script>
 
@@ -60,35 +58,38 @@ const onReset = () => {
       </div>
     </div>
 
-    <div class="mb-6">
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="hub_url">
-        Hub URL
-      </label>
+    <OsInput
+      class="mb-6"
+      input-id="auth0Domain"
+      v-model="env.auth0Domain"
+      label="Auth0 Domain"
+    ></OsInput>
 
-      <div class="flex">
-        <input
-          id="hub_url"
-          v-model="hubUrl"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          type="text"
-        />
+    <OsInput
+      class="mb-6"
+      input-id="auth0ClientId"
+      v-model="env.auth0ClientId"
+      label="Auth0 Client Id"
+    ></OsInput>
 
-        <button
-          class="ml-2 text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center"
-          type="button"
-          @click="onReset"
-        >
-          <IconRefresh class="w-5 h-5"></IconRefresh>
-        </button>
-      </div>
+    <OsInput
+      class="mb-6"
+      input-id="auth0CallbackUrl"
+      v-model="env.auth0CallbackUrl"
+      label="Auth0 Callback Url"
+    ></OsInput>
+
+    <OsInput
+      class="mb-6"
+      input-id="apiServerUrl"
+      v-model="env.apiServerUrl"
+      label="Api Server Url"
+    ></OsInput>
+
+    <div class="flex justify-between">
+      <OsButton class="mb-6" text="Update" type="default" @click="onUpdate"></OsButton>
+
+      <OsButton class="mb-6" text="Reset Default" type="default" @click="onReset"></OsButton>
     </div>
-
-    <button
-      class="px-5 py-2.5 text-sm font-medium rounded-lg text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-      type="button"
-      @click="onUpdate"
-    >
-      Update
-    </button>
   </form>
 </template>

@@ -1,4 +1,4 @@
-import type { Server, ServerCreate, ServerSettings, ServerToken } from '@/models/server'
+import type { Server, ServerCreate, ServerName, ServerSettings, ServerToken } from '@/models/server'
 import { getBaseUrl } from '@/apis/baseUrl'
 
 export async function getServers(token: string) {
@@ -72,6 +72,23 @@ export async function regenerateServerToken(token: string, serverId: number): Pr
     headers: {
       Authorization: 'Bearer ' + token
     }
+  })
+  return await response.json()
+}
+
+export async function renameServer(
+  token: string,
+  serverId: number,
+  serverName: ServerName
+): Promise<ServerToken> {
+  const baseUrl = getBaseUrl()
+  const response = await fetch(`${baseUrl}/servers/${serverId}/name`, {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(serverName)
   })
   return await response.json()
 }

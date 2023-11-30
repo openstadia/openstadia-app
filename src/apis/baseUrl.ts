@@ -1,6 +1,6 @@
-import { useHubStore } from '@/stores/hub'
+import { useEnvStore } from '@/stores/env'
 
 export const getBaseUrl = () => {
-  const { hub } = useHubStore()
-  return hub
+  const { env } = useEnvStore()
+  return env.apiServerUrl
 }

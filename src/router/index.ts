@@ -6,7 +6,6 @@ import { authGuard } from '@auth0/auth0-vue'
 import AppsView from '@/views/AppsView.vue'
 import ServerSettingsView from '@/views/ServerSettingsView.vue'
 import ServerCreateView from '@/views/ServerCreateView.vue'
-import ServerConnectView from '@/views/ServerConnectView.vue'
 import { unref } from 'vue'
 import OnboardingView from '@/views/OnboardingView.vue'
 import VerifyEmailView from '@/views/VerifyEmailView.vue'
@@ -40,7 +39,13 @@ const router = createRouter({
     {
       path: '/servers/:id/connect',
       name: 'server_connect',
-      component: ServerConnectView,
+      component: () => import('@/views/ServerConnectView.vue'),
+      props: true
+    },
+    {
+      path: '/servers/:id/invite',
+      name: 'server_invite',
+      component: () => import('@/views/ServerInviteView.vue'),
       props: true
     },
     {
