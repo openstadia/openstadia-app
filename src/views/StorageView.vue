@@ -5,8 +5,8 @@ import ButtonSorting from "@/components/ButtonSorting.vue";
 import StorageRowItem from "@/components/StorageRowItem.vue";
 import {useStorageDataStore} from "@/stores/storage_data";
 import {convertTime, convertSize} from '@/utils/displayFormats'
-import {getFileUploadLink, uploadFileData} from '@/apis/storage'
-import type {FileUploadLink} from "@/models/storage";
+import {getFileUploadLink, getStorageInfo, uploadFileData} from '@/apis/storage'
+import type {FileUploadLink, StorageInfo} from "@/models/storage";
 
 const { getAccessTokenSilently } = useAuth0()
 const token = ref('')
@@ -27,6 +27,7 @@ async function submitFile() {
   let link: FileUploadLink = await getFileUploadLink(token.value!!, {path: file.name})
   await uploadFileData(link, file, updateList, storageDataStore.updateUploadingItem, storageDataStore.removeUploadingItem) // doesn't really wait
   fileInput.value = null
+  await storageDataStore.watchForInfoUpdate()
 }
 
 onMounted(async () => {
@@ -39,9 +40,9 @@ async function updateList() {
 }
 
 const convertPercentUsed = () => {
-  if(storageDataStore.items.used_space == -1) return
-  return Math.floor(100 * storageDataStore.items.used_space / storageDataStore.items.total_space) + "% space used ("
-      + convertSize(storageDataStore.items.used_space) + " / " + convertSize(storageDataStore.items.total_space) + ")"
+  if(storageDataStore.storageInfo!!.total_space == -1) return "Loading..."
+  return Math.floor(100 * storageDataStore.storageInfo!!.used_space / storageDataStore.storageInfo!!.total_space) + "% space used ("
+      + convertSize(storageDataStore.storageInfo!!.used_space) + " / " + convertSize(storageDataStore.storageInfo!!.total_space) + ")"
 }
 
 </script>
@@ -108,10 +109,10 @@ const convertPercentUsed = () => {
 
     <ul>
       <li v-for="item in storageDataStore.uploading!!" :key="item.name" class="flex gap-5 p-2 m-2 border rounded-lg">
-        <StorageRowItem :item="item" :update-list-func="updateList" />
+        <StorageRowItem :item="item" :storage-data-store="storageDataStore" />
       </li>
       <li v-for="item in storageDataStore.items!!.objects" :key="item.name" class="flex gap-5 p-2 m-2 border-gray-300 bg-gray-50 border rounded-lg hover:bg-gray-100 hover:border-blue-500">
-        <StorageRowItem :item="item" :update-list-func="updateList" />
+        <StorageRowItem :item="item" :storage-data-store="storageDataStore" />
       </li>
     </ul>
   </form>

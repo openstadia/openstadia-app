@@ -5,12 +5,12 @@ import {convertTime, convertSize} from '@/utils/displayFormats'
 
 const props = defineProps<{
   item: StorageItem
-  updateListFunc: Function
+  storageDataStore: any
 }>()
 
 function getUploadingItemText() {
-  let percentage = (props.item.sizeUploaded / props.item.sizeTotal) * 100;
-  return convertSize(props.item.sizeUploaded) + " / " + convertSize(props.item.sizeTotal) + " (" + Math.round(percentage) + "%)"
+  let percentage = (props.item.size_uploaded / props.item.size_total) * 100;
+  return convertSize(props.item.size_uploaded) + " / " + convertSize(props.item.size_total) + " (" + Math.round(percentage) + "%)"
 }
 
 </script>
@@ -23,7 +23,7 @@ function getUploadingItemText() {
   <template v-else>  <!-- an stable item -->
     <div class="flex-grow">{{item.name}}</div>
     <div class="last-modified-width">{{convertTime(item.time_edited)}}</div>
-    <div class="size-width">{{ convertSize(item.sizeTotal) }}</div>
-    <div class="actions-width"><buttons-download-delete :item="props.item" :update-list-func="props.updateListFunc"/></div>
+    <div class="size-width">{{ convertSize(item.size_total) }}</div>
+    <div class="actions-width"><buttons-download-delete :item="props.item" :storage-data-store="props.storageDataStore"/></div>
   </template>
 </template>

@@ -1,14 +1,17 @@
 export interface StorageItem {
     name: string
-    sizeTotal: number
-    sizeUploaded: number
+    size_total: number
+    size_uploaded: number
     time_edited: string
 }
 
-export interface StorageItemsAndState {
+export interface StorageItems {
+    objects: StorageItem[]
+}
+
+export interface StorageInfo {
     used_space: number
     total_space: number
-    objects: StorageItem[]
 }
 
 export interface DownloadFile {

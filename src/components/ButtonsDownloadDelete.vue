@@ -10,7 +10,7 @@ const { getAccessTokenSilently } = useAuth0()
 
 const props = defineProps<{
   item: StorageItem
-  updateListFunc: Function
+  storageDataStore: any
 }>()
 
 const downloadFileAction = async () => {
@@ -22,7 +22,8 @@ const downloadFileAction = async () => {
 const deleteFileAction = async () => {
   const token = await getAccessTokenSilently()
   await deleteFile(token, {path: [props.item.name]})
-  props.updateListFunc.call(null)
+  await props.storageDataStore.updateItems.call(null)
+  await props.storageDataStore.watchForInfoUpdate.call(null)
 }
 
 </script>
